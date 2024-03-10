@@ -1,4 +1,11 @@
-# React + Vite
+# Oxygen Test
+
+Done. Now run:
+
+  cd prueba-tecnica-oxygen
+  npm install
+  npm run dev
+
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
