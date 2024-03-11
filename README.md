@@ -1,6 +1,6 @@
 # Oxygen Test
 
-Done. Now run:
+Steps for run project:
 
   cd prueba-tecnica-oxygen
   npm install
