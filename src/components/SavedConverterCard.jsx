@@ -2,12 +2,15 @@ import { Paper } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
+import { useMediaQuery } from "@mui/material";
 
 function SavedConverterCard(props) {
+    const mobile = useMediaQuery("(max-width:320px)");
+
     return (
         <Paper
             sx={{
-                width: "80%",
+                width: mobile ? "100%" : "80%",
                 borderRadius: 3,
                 paddingLeft: 2,
                 paddingRight: 2,

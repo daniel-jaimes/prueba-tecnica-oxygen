@@ -14,6 +14,7 @@ import SavedConverterCard from "./components/SavedConverterCard";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
+import { useMediaQuery } from "@mui/material";
 
 function App() {
     const [liked, setLiked] = useState(false);
@@ -26,8 +27,8 @@ function App() {
     const coverterUnits = new Map([
         [10, { from: "km", to: "miles" }],
         [15, { from: "miles", to: "km" }],
-        [20, { from: "feat", to: "m" }],
-        [25, { from: "m", to: "feat" }],
+        [20, { from: "feet", to: "m" }],
+        [25, { from: "m", to: "feet" }],
         [30, { from: "cm", to: "inches" }],
         [35, { from: "inches", to: "cm" }],
     ]);
@@ -37,27 +38,29 @@ function App() {
     };
 
     useEffect(() => {
+        var resultConverted;
         if (measureIsNumeric) {
             switch (converter) {
                 case 10:
-                    setResult(measure);
+                    resultConverted = measure * 0.6214;
                     break;
                 case 15:
-                    setResult(measure);
+                    resultConverted = measure * 1.6093;
                     break;
                 case 20:
-                    setResult(measure);
+                    resultConverted = measure * 0.3048;
                     break;
                 case 25:
-                    setResult(measure);
+                    resultConverted = measure * 3.280839895;
                     break;
                 case 30:
-                    setResult(measure);
+                    resultConverted = measure * 0.3937;
                     break;
                 case 35:
-                    setResult(measure);
+                    resultConverted = measure * 2.54;
                     break;
             }
+            setResult((Math.round(resultConverted * 100) / 100).toFixed(2));
         }
     }, [measureIsNumeric, converter, measure]);
 
@@ -97,6 +100,10 @@ function App() {
     const handleClickToggleConverter = () => {
         if (converter % 10 === 0) setConverter(converter + 5);
         else setConverter(converter - 5);
+        const auxResult = result;
+        const auxMeasure = measure;
+        setMeasure(auxResult);
+        setResult(auxMeasure);
     };
 
     const handleDeleteConverterCard = (id) => {
@@ -105,6 +112,7 @@ function App() {
         setSavedConverterList(listFiltered);
     };
 
+    const mobile = useMediaQuery("(max-width:320px)");
     return (
         <>
             <Box component="section" sx={{ p: 2, padding: "2px 0 2px" }}>
@@ -123,11 +131,10 @@ function App() {
                 <Divider sx={{ borderBottomWidth: 3, width: "100%" }} />
             </Box>
             <Container
-                maxWidth="75%"
                 style={{
-                    width: "70%",
-                    paddingLeft: "15%",
-                    paddingRight: "15%",
+                    width: mobile ? "95%" : "75%%",
+                    paddingLeft: mobile ? "2.5%" : "15%",
+                    paddingRight: mobile ? "2.55%" : "15%",
                     paddingTop: 30,
                 }}
             >
@@ -140,9 +147,9 @@ function App() {
                         },
                     }}
                     style={{
-                        width: "95%",
-                        paddingLeft: "2.5%",
-                        paddingRight: "2.5%",
+                        width: mobile ? "80%" : "95%",
+                        paddingLeft: mobile ? "10%" : "2.5%",
+                        paddingRight: mobile ? "10%" : "2.5%",
                         height: "auto",
                         backgroundColor: "rgb(48,4,60)",
                         color: "white",
@@ -161,7 +168,7 @@ function App() {
                         sx={{
                             display: "flex",
                             alignItems: "center",
-                            flexDirection: "row",
+                            flexDirection: mobile ? "column" : "row",
                             width: "100%",
                             paddingBottom: 1,
                             paddingTop: 1,
@@ -170,6 +177,7 @@ function App() {
                         <Box
                             flex={1}
                             sx={{
+                                width: "100%",
                                 textAlign: "left",
                             }}
                         >
@@ -193,8 +201,8 @@ function App() {
                                     km → miles
                                 </MenuItem>
                                 <MenuItem value={15}>miles → km</MenuItem>
-                                <MenuItem value={20}>feat → m</MenuItem>
-                                <MenuItem value={25}>m → feat</MenuItem>
+                                <MenuItem value={20}>feet → m</MenuItem>
+                                <MenuItem value={25}>m → feet</MenuItem>
                                 <MenuItem value={30}>cm → inches</MenuItem>
                                 <MenuItem value={35}>inches → cm</MenuItem>
                             </Select>
@@ -212,6 +220,7 @@ function App() {
                                 display: "flex",
                                 justifyContent: "left",
                                 alignItems: "center",
+                                width: "100%",
                             }}
                         >
                             <TextField
@@ -238,7 +247,7 @@ function App() {
                             flexDirection: "row",
                             width: "100%",
                             paddingBottom: 2.5,
-                            paddingTop: 1,
+                            paddingTop: mobile ? 2 : 1,
                         }}
                     >
                         <Box
@@ -265,7 +274,13 @@ function App() {
                                 paddingRight: "6%",
                             }}
                         >
-                            <Typography style={{}} variant="h6" gutterBottom>
+                            <Typography
+                                style={{
+                                    fontSize: mobile ? "19px" : "22px",
+                                    fontWeight: mobile ? "550" : "500",
+                                }}
+                                gutterBottom
+                            >
                                 {result + " " + coverterUnits.get(converter).to}
                             </Typography>
                         </Box>
@@ -274,9 +289,9 @@ function App() {
                 <Paper
                     elevation={0}
                     style={{
-                        width: "100%",
-                        paddingLeft: "2.5%",
-                        paddingRight: "2.5%",
+                        width: mobile ? "90%" : "95%",
+                        paddingLeft: mobile ? "5%" : "2.5%",
+                        paddingRight: mobile ? "5%" : "2.5%",
                         paddingTop: 30,
                         height: "auto",
                     }}
@@ -299,7 +314,7 @@ function App() {
                         sx={{ margin: 0, padding: 0 }}
                     >
                         {savedConverterList.map((item, index) => (
-                            <Grid item xs={6} key={index}>
+                            <Grid item xs={mobile ? 10.2 : 6} key={index}>
                                 <SavedConverterCard
                                     key={index}
                                     id={index}
@@ -319,6 +334,7 @@ function App() {
                 sx={{
                     display: "flex",
                     width: "100%",
+
                     position: "fixed",
                     alignItems: "center",
                     flexDirection: "row",
@@ -334,7 +350,8 @@ function App() {
                     flex={1}
                     sx={{
                         textAlign: "right",
-                        marginRight: 5,
+                        marginRight: mobile ? 2 : 5,
+                        fontSize: mobile ? "13px" : "16px",
                     }}
                     gutterBottom
                 >
@@ -344,7 +361,8 @@ function App() {
                     flex={1}
                     sx={{
                         textAlign: "left",
-                        marginLeft: 5,
+                        marginLeft: mobile ? 2 : 5,
+                        fontSize: mobile ? "13px" : "16px",
                     }}
                     gutterBottom
                 >
